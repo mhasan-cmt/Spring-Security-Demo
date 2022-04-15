@@ -10,11 +10,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    private static final String[] WHITE_LIST_URLs = {"/", "/register"};
+    private static final String[] WHITE_LISTED_URLs =
+            {
+                    "/",
+                    "/register",
+                    "/verifyRegistration",
+                    "/resendVerifyToken*"
+            };
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(11);
-    };
+    }
+
+    ;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -24,7 +33,7 @@ public class WebSecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .antMatchers(WHITE_LIST_URLs)
+                .antMatchers(WHITE_LISTED_URLs)
                 .permitAll();
 
         return httpSecurity.build();
